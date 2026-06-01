@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillChain</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      padding: 40px 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #7c6bff;
+      font-size: 22px;
+      letter-spacing: 3px;
+      margin-bottom: 4px;
+    }
+
+    h3 {
+      color: #888;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+    }
+
+    .tagline {
+      color: #555;
+      font-size: 12px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    .status {
+      display: inline-block;
+      font-size: 11px;
+      color: #7c6bff;
+      background: #1a1630;
+      border: 1px solid #3d3475;
+      border-radius: 4px;
+      padding: 3px 10px;
+      margin-bottom: 28px;
+    }
+
+    .status.connected { color: #4caf50; background: #0d1f0d; border-color: #2a5c2a; }
+
+    button {
+      background: #7c6bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-top: 10px;
+      transition: background 0.15s;
+    }
+
+    button:hover  { background: #5f50d4; }
+    button:disabled { background: #2a2a2a; color: #555; cursor: not-allowed; }
+
+    input {
+      width: 100%;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin: 5px 0;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus { border-color: #7c6bff; }
+
+    .address {
+      font-size: 11px;
+      color: #555;
+      word-break: break-all;
+      margin-top: 10px;
+    }
+
+    .address span { color: #7c6bff; }
+
+    .feedback {
+      font-size: 12px;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .feedback.ok   { color: #4caf50; }
+    .feedback.err  { color: #f44336; }
+    .feedback.wait { color: #ff9800; }
+
+    .feedback a {
+      color: #7c6bff;
+      text-decoration: none;
+    }
+
+    .feedback a:hover { text-decoration: underline; }
+
+    .badge-card {
+      background: #0d0d0d;
+      border-left: 3px solid #7c6bff;
+      padding: 14px 16px;
+      margin: 8px 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 12px;
+      line-height: 2;
+    }
+
+    .badge-skill  { color: #7c6bff; font-size: 14px; font-weight: bold; }
+    .badge-meta   { color: #555; }
+    .badge-meta span { color: #999; }
+
+    .counter {
+      float: right;
+      font-size: 11px;
+      color: #444;
+      margin-top: 2px;
+    }
+
+    hr { border: none; border-top: 1px solid #1e1e1e; margin: 6px 0 14px; }
+
+    #badgeList:empty::after {
+      content: 'Aucun badge trouvé.';
+      color: #444;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>⬡ SKILLCHAIN</h1>
+  <p class="tagline">Certification de compétences décentralisée — Sepolia Testnet</p>
+  <p class="status" id="status">Non connecté</p>
+
+  <!-- Wallet -->
+  <div class="card">
+    <h3>Wallet</h3>
+    <button id="btnConnect">Connecter MetaMask</button>
+    <p class="address" id="userAddress"></p>
+  </div>
+
+  <!-- Émettre -->
+  <div class="card">
+    <h3>Émettre un badge</h3>
+    <hr>
+    <input id="inputStudent" placeholder="Adresse de l'étudiant (0x...)">
+    <input id="inputSkill"   placeholder="Compétence (ex: Solidity Basics)">
+    <button id="btnIssue" disabled>Émettre le badge</button>
+    <p class="feedback" id="issueFeedback"></p>
+  </div>
+
+  <!-- Vérifier -->
+  <div class="card">
+    <h3>
+      Vérifier les badges
+      <span class="counter" id="badgeCounter"></span>
+    </h3>
+    <hr>
+    <input id="inputCheck" placeholder="Adresse à vérifier (0x...)">
+    <button id="btnCheck" disabled>Vérifier</button>
+    <div id="badgeList" style="margin-top:14px"></div>
+  </div>
+
+  <script type="module">
+    import { ethers } from "https://esm.sh/ethers@6.7.1";
+
+    // ─────────────────────────────────────────────
+    //  REMPLACER PAR L'ADRESSE DU CONTRAT DÉPLOYÉ
+    // ─────────────────────────────────────────────
+    const CONTRACT_ADDRESS = "0x679E528c0712cA4F1Dbe37Ab99Dfd66855091fa8";
+
+    const ABI = [
+      "function issueBadge(address student, string calldata skill) external",
+      "function getBadgeCount() external view returns (uint256)",
+      "function getBadgesOf(address student) external view returns (uint256[])",
+      "function getBadge(uint256 index) external view returns (address, string, uint256, address)",
+      "event BadgeIssued(address indexed student, string skill, uint256 issuedAt, address indexed issuer)"
+    ];
+
+    let provider, signer, contract;
+
+    const $  = id => document.getElementById(id);
+    const ts = unix => new Date(Number(unix) * 1000).toLocaleString("fr-FR");
+    const short = addr => addr.slice(0, 6) + "..." + addr.slice(-4);
+
+    // ── Connexion MetaMask ──────────────────────
+    $("btnConnect").onclick = async () => {
+      if (!window.ethereum) {
+        alert("MetaMask non détecté. Installez l'extension depuis metamask.io");
+        return;
+      }
+
+      provider = new ethers.BrowserProvider(window.ethereum);
+      signer   = await provider.getSigner();
+      const addr = await signer.getAddress();
+
+      $("userAddress").innerHTML = `Adresse : <span>${addr}</span>`;
+      $("status").textContent    = "Connecté — Sepolia";
+      $("status").className      = "status connected";
+      $("btnIssue").disabled     = false;
+      $("btnCheck").disabled     = false;
+
+      contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+
+      // Écoute les nouveaux badges en temps réel
+      contract.on("BadgeIssued", (student, skill, issuedAt, issuer) => {
+        console.log(`[event] BadgeIssued — ${skill} → ${short(student)} par ${short(issuer)}`);
+      });
+    };
+
+    // ── Émettre un badge ───────────────────────
+    $("btnIssue").onclick = async () => {
+      const student = $("inputStudent").value.trim();
+      const skill   = $("inputSkill").value.trim();
+      const fb      = $("issueFeedback");
+
+      if (!student || !skill) {
+        fb.textContent = "Remplissez les deux champs.";
+        fb.className   = "feedback err";
+        return;
+      }
+
+      if (!ethers.isAddress(student)) {
+        fb.textContent = "Adresse Ethereum invalide.";
+        fb.className   = "feedback err";
+        return;
+      }
+
+      try {
+        fb.textContent = "Transaction en cours — confirmez dans MetaMask...";
+        fb.className   = "feedback wait";
+
+        const tx = await contract.issueBadge(student, skill);
+        fb.innerHTML = `Transaction envoyée — <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">${tx.hash.slice(0,18)}...</a>`;
+        fb.className = "feedback wait";
+
+        await tx.wait();
+        fb.innerHTML = `✓ Badge confirmé — <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">Voir sur Etherscan →</a>`;
+        fb.className = "feedback ok";
+
+        $("inputStudent").value = "";
+        $("inputSkill").value   = "";
+      } catch (e) {
+        fb.textContent = e.reason ?? e.message;
+        fb.className   = "feedback err";
+      }
+    };
+
+    // ── Vérifier les badges ────────────────────
+    $("btnCheck").onclick = async () => {
+      const addr = $("inputCheck").value.trim();
+      const list = $("badgeList");
+      const ctr  = $("badgeCounter");
+
+      list.innerHTML = "";
+      ctr.textContent = "";
+
+      if (!ethers.isAddress(addr)) {
+        list.innerHTML = `<p class="feedback err">Adresse invalide.</p>`;
+        return;
+      }
+
+      list.innerHTML = `<p class="feedback wait">Chargement...</p>`;
+
+      try {
+        const indexes = await contract.getBadgesOf(addr);
+
+        if (indexes.length === 0) {
+          list.innerHTML  = "";
+          ctr.textContent = "0 badge";
+          return;
+        }
+
+        ctr.textContent = `${indexes.length} badge${indexes.length > 1 ? "s" : ""}`;
+        list.innerHTML  = "";
+
+        for (const idx of indexes) {
+          const [student, skill, issuedAt, issuer] = await contract.getBadge(idx);
+          const card = document.createElement("div");
+          card.className = "badge-card";
+          card.innerHTML = `
+            <div class="badge-skill">${skill}</div>
+            <div class="badge-meta">
+              Étudiant &nbsp;: <span>${student}</span><br>
+              Émis le &nbsp;&nbsp;: <span>${ts(issuedAt)}</span><br>
+              Par &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span>
+                <a href="https://sepolia.etherscan.io/address/${issuer}" target="_blank" style="color:#7c6bff">${issuer}</a>
+              </span>
+            </div>`;
+          list.appendChild(card);
+        }
+      } catch (e) {
+        list.innerHTML = `<p class="feedback err">${e.message}</p>`;
+      }
+    };
+  </script>
+</body>
+</html>
