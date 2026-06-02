@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillChain — Fiche de référence</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      padding: 32px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    h1 { color: #7c6bff; font-size: 20px; letter-spacing: 3px; margin-bottom: 6px; }
+    h2 { color: #7c6bff; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;
+         margin: 36px 0 14px; padding-bottom: 6px; border-bottom: 1px solid #222; }
+    h3 { color: #aaa; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+         margin: 20px 0 10px; }
+
+    .subtitle { color: #555; font-size: 12px; margin-bottom: 32px; }
+
+    /* Navigation */
+    nav {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 32px; padding-bottom: 16px;
+      border-bottom: 1px solid #1e1e1e;
+    }
+    nav a {
+      color: #7c6bff; text-decoration: none; font-size: 12px;
+      background: #1a1630; border: 1px solid #3d3475;
+      padding: 4px 12px; border-radius: 4px;
+    }
+    nav a:hover { background: #2a2045; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+    th { background: #1a1a1a; color: #7c6bff; text-align: left;
+         padding: 8px 12px; font-weight: normal; font-size: 11px;
+         text-transform: uppercase; letter-spacing: 1px; }
+    td { padding: 8px 12px; border-bottom: 1px solid #1e1e1e; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #131313; }
+
+    .tag {
+      display: inline-block; background: #1a1630; color: #7c6bff;
+      border: 1px solid #3d3475; border-radius: 3px;
+      padding: 1px 6px; font-size: 11px;
+    }
+    .tag.green  { background: #0d1f0d; color: #4caf50; border-color: #2a5c2a; }
+    .tag.orange { background: #1f1500; color: #ff9800; border-color: #5c3c00; }
+
+    /* Code blocks */
+    pre {
+      background: #111; border: 1px solid #222; border-radius: 6px;
+      padding: 16px 18px; overflow-x: auto; margin: 10px 0;
+      font-size: 13px; line-height: 1.8;
+    }
+    code { color: #e0e0e0; }
+    .c  { color: #555; }     /* commentaire */
+    .kw { color: #7c6bff; } /* keyword */
+    .ty { color: #4caf50; } /* type */
+    .fn { color: #81d4fa; } /* function */
+    .st { color: #ff9800; } /* string/value */
+    .an { color: #ffeb3b; } /* annotation */
+
+    /* Steps */
+    .steps { counter-reset: step; }
+    .step {
+      counter-increment: step;
+      background: #141414; border: 1px solid #222; border-radius: 6px;
+      padding: 14px 16px 14px 52px; margin: 8px 0;
+      position: relative;
+    }
+    .step::before {
+      content: counter(step);
+      position: absolute; left: 16px; top: 14px;
+      background: #7c6bff; color: white;
+      width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: bold;
+    }
+    .step-title { color: #ccc; font-size: 13px; margin-bottom: 4px; }
+    .step-detail { color: #666; font-size: 12px; }
+
+    /* Errors */
+    .error-card {
+      background: #1a0d0d; border: 1px solid #5c1a1a; border-radius: 6px;
+      padding: 12px 16px; margin: 8px 0;
+    }
+    .error-title { color: #f44336; font-size: 12px; margin-bottom: 6px; }
+    .error-fix   { color: #4caf50; font-size: 12px; }
+
+    /* Divider */
+    hr { border: none; border-top: 1px solid #1e1e1e; margin: 8px 0; }
+
+    .note {
+      background: #0d1520; border-left: 3px solid #7c6bff;
+      padding: 10px 14px; margin: 10px 0; font-size: 12px; color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+<h1>⬡ SKILLCHAIN</h1>
+<p class="subtitle">Fiche de référence — Workshop Blockchain & Web3</p>
+
+<nav>
+  <a href="#zombies">Du Zombie au Badge</a>
+  <a href="#contrat">Contrat annoté</a>
+  <a href="#remix">Remix pas à pas</a>
+  <a href="#erreurs">Erreurs fréquentes</a>
+  <a href="#glossaire">Glossaire</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="zombies">1 — Du Zombie au Badge</h2>
+<p style="color:#666;font-size:12px;margin-bottom:12px">
+  Chaque concept appris dans CryptoZombies a son équivalent direct dans SkillBadge.sol.
+</p>
+
+<table>
+  <tr>
+    <th>CryptoZombies</th>
+    <th>Concept</th>
+    <th>Dans SkillBadge.sol</th>
+  </tr>
+  <tr>
+    <td><span class="tag">Ch. 1</span></td>
+    <td>
+      <code>pragma solidity</code><br>
+      <span style="color:#666;font-size:12px">Déclarer la version du compilateur</span>
+    </td>
+    <td><code>pragma solidity ^0.8.0;</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag">Ch. 1</span></td>
+    <td>
+      <code>contract NomDuContrat { }</code><br>
+      <span style="color:#666;font-size:12px">Structure de base d'un contrat</span>
+    </td>
+    <td><code>contract SkillBadge { }</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag">Ch. 2</span></td>
+    <td>
+      <code>uint</code>, variables d'état<br>
+      <span style="color:#666;font-size:12px">Stockées sur la blockchain (coûtent du gas)</span>
+    </td>
+    <td><code>uint256 issuedAt</code> dans la struct</td>
+  </tr>
+  <tr>
+    <td><span class="tag">Ch. 4</span></td>
+    <td>
+      <code>struct</code><br>
+      <span style="color:#666;font-size:12px">Regrouper plusieurs variables sous un même type</span>
+    </td>
+    <td><code>struct Badge { address, string, uint256, address }</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag">Ch. 5</span></td>
+    <td>
+      <code>Type[] public tableau</code><br>
+      <span style="color:#666;font-size:12px">Tableau dynamique stocké sur la blockchain</span>
+    </td>
+    <td><code>Badge[] public badges</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag">Ch. 5</span></td>
+    <td>
+      <code>tableau.push(valeur)</code><br>
+      <span style="color:#666;font-size:12px">Ajouter un élément à un tableau</span>
+    </td>
+    <td><code>badges.push(Badge(...))</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag">Ch. 6</span></td>
+    <td>
+      <code>function nom(...) external</code><br>
+      <span style="color:#666;font-size:12px">Fonction appelable depuis l'extérieur</span>
+    </td>
+    <td><code>function issueBadge(...) external</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag">Ch. 8</span></td>
+    <td>
+      <code>view</code><br>
+      <span style="color:#666;font-size:12px">Lecture seule — gratuit à appeler, pas de gas</span>
+    </td>
+    <td><code>getBadge(...) external view</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag orange">Nouveau</span></td>
+    <td>
+      <code>mapping(K => V)</code><br>
+      <span style="color:#666;font-size:12px">Table clé-valeur — accès direct par clé</span>
+    </td>
+    <td><code>mapping(address => uint256[])</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag orange">Nouveau</span></td>
+    <td>
+      <code>event + emit</code><br>
+      <span style="color:#666;font-size:12px">Log permanent sur la blockchain, visible sur Etherscan</span>
+    </td>
+    <td><code>event BadgeIssued(...) / emit BadgeIssued(...)</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag orange">Nouveau</span></td>
+    <td>
+      <code>msg.sender</code><br>
+      <span style="color:#666;font-size:12px">L'adresse qui appelle la fonction</span>
+    </td>
+    <td><code>msg.sender</code> → stocké comme <code>issuer</code></td>
+  </tr>
+  <tr>
+    <td><span class="tag orange">Nouveau</span></td>
+    <td>
+      <code>block.timestamp</code><br>
+      <span style="color:#666;font-size:12px">Horodatage du bloc en cours (secondes Unix)</span>
+    </td>
+    <td><code>block.timestamp</code> → stocké comme <code>issuedAt</code></td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="contrat">2 — SkillBadge.sol annoté</h2>
+<p style="color:#666;font-size:12px;margin-bottom:12px">
+  Lisez chaque ligne. Les commentaires expliquent le pourquoi, pas seulement le quoi.
+</p>
+
+<pre><code><span class="c">// Licence open-source — requis par le compilateur depuis Solidity 0.6.8</span>
+<span class="kw">// SPDX-License-Identifier: MIT</span>
+
+<span class="c">// Version du compilateur — le ^ signifie "0.8.x mais pas 0.9"</span>
+<span class="kw">pragma solidity</span> ^0.8.0;
+
+<span class="kw">contract</span> <span class="fn">SkillBadge</span> {
+
+    <span class="c">// ── TYPES ──────────────────────────────────────────────────────────────</span>
+
+    <span class="c">// Un Badge = les 4 informations qui définissent une certification</span>
+    <span class="kw">struct</span> <span class="ty">Badge</span> {
+        <span class="ty">address</span> student;   <span class="c">// adresse Ethereum de l'étudiant certifié</span>
+        <span class="ty">string</span>  skill;     <span class="c">// nom de la compétence  ex: "Solidity Basics"</span>
+        <span class="ty">uint256</span> issuedAt;  <span class="c">// timestamp Unix  ex: 1717200000  (secondes depuis 1970)</span>
+        <span class="ty">address</span> issuer;    <span class="c">// adresse qui a signé la certification</span>
+    }
+
+    <span class="c">// ── ÉTAT (stocké sur la blockchain) ────────────────────────────────────</span>
+
+    <span class="c">// Tous les badges, dans l'ordre de création</span>
+    <span class="c">// 'public' → Solidity génère automatiquement badges(0), badges(1), etc.</span>
+    <span class="ty">Badge</span>[] <span class="kw">public</span> badges;
+
+    <span class="c">// Pour chaque adresse : la liste des index de ses badges dans le tableau ci-dessus</span>
+    <span class="c">// ex: badgesByStudent[0xABC] = [0, 3, 7]  → l'étudiant a les badges #0, #3, #7</span>
+    <span class="kw">mapping</span>(<span class="ty">address</span> => <span class="ty">uint256</span>[]) <span class="kw">public</span> badgesByStudent;
+
+    <span class="c">// ── EVENTS (logs permanents) ────────────────────────────────────────────</span>
+
+    <span class="c">// Émis à chaque nouveau badge → visible dans Etherscan → écoutable par les DApps</span>
+    <span class="c">// 'indexed' = filtrable : "tous les badges de cet étudiant" sans lire tout le contrat</span>
+    <span class="kw">event</span> <span class="fn">BadgeIssued</span>(
+        <span class="ty">address</span> <span class="kw">indexed</span> student,
+        <span class="ty">string</span>  skill,
+        <span class="ty">uint256</span> issuedAt,
+        <span class="ty">address</span> <span class="kw">indexed</span> issuer
+    );
+
+    <span class="c">// ── FONCTIONS D'ÉCRITURE (coûtent du gas) ──────────────────────────────</span>
+
+    <span class="c">// Certifier une compétence pour un étudiant</span>
+    <span class="c">// 'external'  = appelable de l'extérieur seulement (pas dans le contrat)</span>
+    <span class="c">// 'calldata'  = paramètre en lecture seule, moins cher en gas que 'memory'</span>
+    <span class="kw">function</span> <span class="fn">issueBadge</span>(<span class="ty">address</span> student, <span class="ty">string</span> <span class="kw">calldata</span> skill) <span class="kw">external</span> {
+        <span class="ty">uint256</span> index = badges.length;  <span class="c">// index qu'aura ce badge dans le tableau</span>
+
+        badges.push(<span class="ty">Badge</span>(
+            student,
+            skill,
+            block.timestamp,  <span class="c">// horodatage fourni par le validateur du bloc</span>
+            msg.sender        <span class="c">// adresse qui appelle cette fonction (l'émetteur)</span>
+        ));
+
+        badgesByStudent[student].push(index);  <span class="c">// référencer ce badge pour cet étudiant</span>
+        <span class="kw">emit</span> <span class="fn">BadgeIssued</span>(student, skill, block.timestamp, msg.sender);
+    }
+
+    <span class="c">// ── FONCTIONS DE LECTURE (gratuites) ───────────────────────────────────</span>
+
+    <span class="c">// 'view' = ne modifie pas l'état → pas de transaction, pas de gas</span>
+
+    <span class="kw">function</span> <span class="fn">getBadgeCount</span>() <span class="kw">external view returns</span> (<span class="ty">uint256</span>) {
+        <span class="kw">return</span> badges.length;
+    }
+
+    <span class="kw">function</span> <span class="fn">getBadgesOf</span>(<span class="ty">address</span> student)
+        <span class="kw">external view returns</span> (<span class="ty">uint256</span>[] <span class="kw">memory</span>)  <span class="c">// 'memory' obligatoire pour retourner un tableau</span>
+    {
+        <span class="kw">return</span> badgesByStudent[student];
+    }
+
+    <span class="kw">function</span> <span class="fn">getBadge</span>(<span class="ty">uint256</span> index)
+        <span class="kw">external view</span>
+        <span class="kw">returns</span> (<span class="ty">address</span>, <span class="ty">string memory</span>, <span class="ty">uint256</span>, <span class="ty">address</span>)
+    {
+        <span class="ty">Badge</span> <span class="kw">memory</span> b = badges[index];
+        <span class="kw">return</span> (b.student, b.skill, b.issuedAt, b.issuer);
+    }
+}</code></pre>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="remix">3 — Remix — pas à pas</h2>
+
+<h3>A. Créer et remplir le fichier</h3>
+<div class="steps">
+  <div class="step">
+    <div class="step-title">Ouvrir <strong>remix.ethereum.org</strong></div>
+    <div class="step-detail">Panneau gauche → icône dossier (File Explorer)</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Créer un nouveau fichier</div>
+    <div class="step-detail">Cliquer l'icône "New File" → nommer <code>SkillBadge.sol</code></div>
+  </div>
+  <div class="step">
+    <div class="step-title">Coller le code</div>
+    <div class="step-detail">Copier le contenu depuis le Gist partagé par l'instructeur → coller dans l'éditeur</div>
+  </div>
+</div>
+
+<h3>B. Compiler</h3>
+<div class="steps">
+  <div class="step">
+    <div class="step-title">Ouvrir le panneau Solidity Compiler</div>
+    <div class="step-detail">Barre gauche → icône "S" avec une flèche (4ème icône)</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Vérifier la version</div>
+    <div class="step-detail">Le dropdown "Compiler" doit afficher <code>0.8.x</code> — ex: <code>0.8.19</code></div>
+  </div>
+  <div class="step">
+    <div class="step-title">Compiler</div>
+    <div class="step-detail">Cliquer <strong>Compile SkillBadge.sol</strong> → attendre la coche verte ✓</div>
+  </div>
+</div>
+
+<h3>C. Déployer sur Sepolia</h3>
+<div class="steps">
+  <div class="step">
+    <div class="step-title">Ouvrir le panneau Deploy & Run</div>
+    <div class="step-detail">Barre gauche → icône triangle/losange (5ème icône)</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Changer l'Environment</div>
+    <div class="step-detail">
+      Dropdown <strong>Environment</strong> → sélectionner <code>Sepolia Testnet - MetaMask</code><br>
+      <span style="color:#666">MetaMask s'ouvre → connecter le compte → vérifier que le réseau affiché est Sepolia</span>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-title">Vérifier le solde</div>
+    <div class="step-detail">La ligne Account doit afficher <code>> 0 ETH</code> — sinon aller sur sepoliafaucet.com</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Déployer</div>
+    <div class="step-detail">
+      Vérifier que le dropdown Contract affiche <code>SkillBadge</code><br>
+      Cliquer <strong>Deploy</strong> → confirmer dans MetaMask → attendre ~15 secondes
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-title">Copier l'adresse du contrat</div>
+    <div class="step-detail">
+      Dans "Deployed Contracts", copier l'adresse (icône copier)<br>
+      <strong>Conserver cette adresse</strong> — elle sera utilisée dans le notebook Colab
+    </div>
+  </div>
+</div>
+
+<h3>D. Interagir avec le contrat déployé</h3>
+<div class="steps">
+  <div class="step">
+    <div class="step-title">Émettre un badge sur soi-même</div>
+    <div class="step-detail">
+      Dans Deployed Contracts → déplier <code>issueBadge</code><br>
+      <code>student</code> : coller sa propre adresse MetaMask<br>
+      <code>skill</code> : taper <code>Solidity Basics</code><br>
+      Cliquer <strong>transact</strong> → confirmer dans MetaMask
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-title">Émettre un badge vers un voisin</div>
+    <div class="step-detail">
+      Même procédure — <code>student</code> = adresse du voisin, <code>skill</code> = <code>Blockchain Fundamentals</code>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-title">Vérifier ses badges</div>
+    <div class="step-detail">
+      <code>getBadgesOf</code> → entrer sa propre adresse → cliquer <strong>call</strong><br>
+      Résultat attendu : <code>[0]</code> ou <code>[0, 1]</code> (liste d'index)
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-title">Lire un badge</div>
+    <div class="step-detail">
+      <code>getBadge</code> → entrer <code>0</code> → cliquer <strong>call</strong><br>
+      Résultat : 4 champs (student, skill, timestamp, issuer)
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-title">Vérifier sur Etherscan</div>
+    <div class="step-detail">
+      Ouvrir <code>https://sepolia.etherscan.io/address/VOTRE_ADRESSE_CONTRAT</code><br>
+      Onglet Transactions → cliquer une TX → onglet Logs → event <code>BadgeIssued</code> décodé
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="erreurs">4 — Erreurs fréquentes</h2>
+
+<div class="error-card">
+  <div class="error-title">✗  "Injected Provider - MetaMask" n'apparaît pas dans la liste</div>
+  <div class="error-fix">→ MetaMask n'est pas installé ou pas activé sur ce navigateur. Installer l'extension depuis metamask.io puis recharger Remix.</div>
+</div>
+
+<div class="error-card">
+  <div class="error-title">✗  Solde affiché = 0 ETH dans Remix</div>
+  <div class="error-fix">→ Aller sur sepoliafaucet.com → coller l'adresse MetaMask → recevoir 0.5 ETH de test. Attendre ~30 secondes.</div>
+</div>
+
+<div class="error-card">
+  <div class="error-title">✗  MetaMask affiche "Réseau incorrect" ou le réseau n'est pas Sepolia</div>
+  <div class="error-fix">→ Dans MetaMask, cliquer sur le nom du réseau en haut → "Afficher les réseaux de test" → sélectionner Sepolia.</div>
+</div>
+
+<div class="error-card">
+  <div class="error-title">✗  La compilation échoue avec "Source file requires different compiler version"</div>
+  <div class="error-fix">→ Dans le panneau Compiler, changer la version pour <code>0.8.19</code> ou toute version 0.8.x.</div>
+</div>
+
+<div class="error-card">
+  <div class="error-title">✗  Le bouton Deploy est grisé ou inactif</div>
+  <div class="error-fix">→ Le contrat n'est pas compilé. Aller dans le panneau Solidity Compiler → cliquer Compile SkillBadge.sol → revenir dans Deploy.</div>
+</div>
+
+<div class="error-card">
+  <div class="error-title">✗  La transaction MetaMask reste en "pending" longtemps</div>
+  <div class="error-fix">→ Normal sur Sepolia — attendre jusqu'à 60 secondes. Si ça dépasse 2 minutes, vérifier la connexion internet. Pas besoin de renvoyer.</div>
+</div>
+
+<div class="error-card">
+  <div class="error-title">✗  "Gas estimation failed" dans MetaMask</div>
+  <div class="error-fix">→ L'adresse dans le champ "student" est invalide. Vérifier qu'elle commence par 0x et fait 42 caractères.</div>
+</div>
+
+<div class="error-card">
+  <div class="error-title">✗  Le contrat déployé disparaît de Remix après un rechargement</div>
+  <div class="error-fix">→ Normal — Remix ne sauvegarde pas les contrats déployés. L'adresse est toujours valide sur Sepolia. Dans Deploy & Run → "At Address" → coller l'adresse pour le retrouver.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2 id="glossaire">5 — Glossaire</h2>
+
+<table>
+  <tr><th>Terme</th><th>Définition</th></tr>
+  <tr>
+    <td><code>address</code></td>
+    <td>Identifiant unique sur Ethereum. 20 octets, commence par <code>0x</code>. Ex: <code>0x287...4eF</code></td>
+  </tr>
+  <tr>
+    <td><code>ABI</code></td>
+    <td>Application Binary Interface. Le schéma des fonctions d'un contrat — dit à ethers.js/web3.py comment encoder les appels.</td>
+  </tr>
+  <tr>
+    <td><code>block.timestamp</code></td>
+    <td>Horodatage Unix du bloc en cours (secondes depuis le 1er janvier 1970). Fourni par le validateur.</td>
+  </tr>
+  <tr>
+    <td><code>calldata</code></td>
+    <td>Zone mémoire des paramètres d'entrée d'une fonction. Lecture seule. Moins cher que <code>memory</code> pour les strings.</td>
+  </tr>
+  <tr>
+    <td><code>event</code></td>
+    <td>Log émis sur la blockchain lors d'une transaction. Permanent, indexé, visible sur Etherscan. Ne coûte pas cher en gas.</td>
+  </tr>
+  <tr>
+    <td><code>external</code></td>
+    <td>Visibilité d'une fonction : appelable uniquement depuis l'extérieur du contrat. Préférable à <code>public</code> pour les fonctions d'entrée.</td>
+  </tr>
+  <tr>
+    <td><code>gas</code></td>
+    <td>Unité de coût computationnel de l'EVM. Chaque opcode a un coût fixe. Les frais de transaction = gas utilisé × gas price.</td>
+  </tr>
+  <tr>
+    <td><code>Gwei</code></td>
+    <td>10⁻⁹ ETH. Unité utilisée pour exprimer le gas price.</td>
+  </tr>
+  <tr>
+    <td><code>keccak256</code></td>
+    <td>Fonction de hash utilisée par Ethereum (variante de SHA-3). Produit une empreinte de 32 octets.</td>
+  </tr>
+  <tr>
+    <td><code>mapping</code></td>
+    <td>Table de correspondance clé → valeur. Accès en O(1). Pas itérable nativement.</td>
+  </tr>
+  <tr>
+    <td><code>memory</code></td>
+    <td>Zone mémoire temporaire — existe le temps d'une exécution de fonction. Obligatoire pour retourner des tableaux ou strings.</td>
+  </tr>
+  <tr>
+    <td><code>msg.sender</code></td>
+    <td>L'adresse Ethereum qui a envoyé la transaction appelant la fonction courante.</td>
+  </tr>
+  <tr>
+    <td><code>Sepolia</code></td>
+    <td>Réseau de test Ethereum (testnet). Comportement identique au mainnet mais ETH sans valeur réelle.</td>
+  </tr>
+  <tr>
+    <td><code>storage</code></td>
+    <td>Zone mémoire persistante — les variables d'état du contrat. Chère à écrire (SSTORE = 20 000 gas).</td>
+  </tr>
+  <tr>
+    <td><code>view</code></td>
+    <td>Modificateur de fonction : ne modifie pas l'état. Appel gratuit — pas de transaction, pas de gas.</td>
+  </tr>
+  <tr>
+    <td><code>wallet</code></td>
+    <td>Interface gérant une paire clé privée/publique. Ne "contient" pas de tokens — ceux-ci sont sur la blockchain.</td>
+  </tr>
+</table>
+
+<div style="margin-top:40px;padding-top:16px;border-top:1px solid #1e1e1e;color:#333;font-size:11px">
+  SkillChain Workshop — github.com/Noahxel/SDC-WEB3
+</div>
+
+</body>
+</html>
