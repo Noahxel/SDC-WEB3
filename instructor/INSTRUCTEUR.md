@@ -8,7 +8,7 @@
 | `support.html` | Fiche de référence — ouverte pendant Blocs 2 et 3 | ✓ |
 | `index.html` | DApp frontend — démo Bloc 6 | ✓ |
 | `skillchain_workshop.ipynb` | Notebook Colab — Bloc 5 | ✓ |
-| `instructor/INSTRUCTEUR.md` | Ce fichier | ✗ (gitignore) |
+| `instructor/INSTRUCTEUR.md` | Ce fichier | ✗ (guide formateur) |
 
 ---
 
@@ -60,7 +60,7 @@ Envoyer ce message avant le workshop :
                "On lit ce qu'on a créé sur le réseau"
 02:50  BLOC 6  DApp frontend — démo guidée                   20 min
                "On crée l'interface pour l'utiliser"
-03:10  BLOC 7  Présentation Master WEB                       10 min
+03:10  BLOC 7  Présentation de la spécialisation             10 min
 03:20  BLOC 8  Q&A + clôture                                 10 min
 ```
 
@@ -73,7 +73,7 @@ BLOC 0  XRPL Visualizer    https://xrpl-visualizer.vercel.app
 BLOC 1  Anders Hash        https://andersbrownworth.com/blockchain/hash
         Anders Blockchain  https://andersbrownworth.com/blockchain/blockchain
 BLOC 2  CryptoZombies      https://cryptozombies.io
-        Support étudiant   https://pedagit.etna.io/etna3/sdc-comu/-/blob/workshop-web/workshop/index.html?ref_type=heads
+        Support étudiant   support.html (dans ce dépôt)
 BLOC 3  Remix IDE          https://remix.ethereum.org
         Sepolia Faucet     https://sepoliafaucet.com
         Etherscan Sepolia  https://sepolia.etherscan.io
@@ -386,42 +386,11 @@ await tx.wait();
 
 ---
 
-## BLOC 7 — Présentation Master WEB (10 min)
+## BLOC 7 — Présentation de la spécialisation (10 min)
 
-### Message 1 — "Ce soir, vous avez fait le Bloc 1"
-
-> "En 3h vous avez : écrit du Solidity, déployé un contrat sur un réseau public, émis des badges immuables, lu la blockchain en Python, interagi avec une DApp web3. C'est le point d'entrée du Master WEB. Pas l'objectif final."
-
-### Message 2 — Ce que le Master couvre
-
-```
-Sécurité smart contracts    reentrancy, flash loans, audit (Slither, Mythril)
-DeFi                        AMM (Uniswap), prêts (Aave), MEV, tokenomics
-NFT avancé                  ERC-721/1155, royalties, métadonnées on-chain
-Layer 2                     Optimism, Arbitrum, zkSync — scalabilité
-Web3 fullstack              Next.js + wagmi + viem, The Graph, IPFS
-Régulation                  MiCA, fiscalité, DAO, émission de tokens
-XRPL et autres chains       Solana, Polkadot, architectures comparées
-```
-
-### Message 3 — Débouchés
-
-| Rôle | Salaire junior Paris |
-|---|---|
-| Blockchain Developer (EVM) | 55–75k€ |
-| Smart Contract Auditor | 70–100k€ |
-| Web3 Fullstack Dev | 55–70k€ |
-| DeFi Protocol Engineer | 70–90k€ + tokens |
-
-Entreprises : Ledger, Consensys, Société Générale Forge, AXA, BNP Paribas, LVMH/Arianee.
-
-### Message 4 — Pourquoi maintenant
-
-> "MiCA est en vigueur. BlackRock a lancé un ETF Bitcoin. La tokenisation d'actifs réels est estimée à 10 000 milliards de dollars d'ici 2030 (BCG). La blockchain sort de la spéculation. La fenêtre pour des devs formés est ouverte maintenant."
-
-### Message 5 — Le lien direct avec ce soir
-
-> "Le SkillBadge que vous avez déployé, dans le Master vous allez : le rendre non-transférable (Soulbound Token), ajouter de la révocation sécurisée, en faire un NFT, créer un système multi-signataires, indexer les données avec The Graph, déployer sur mainnet avec un audit de sécurité. Ce soir c'était le bloc 1. Le Master, c'est les 18 blocs qui suivent."
+> Contenu propre à l'école (programme, débouchés), non inclus dans ce dépôt.
+>
+> **Fil rouge :** relier ce qui vient d'être fait au parcours qui suit. *"Ce soir, vous avez fait le bloc 1."*
 
 ---
 
